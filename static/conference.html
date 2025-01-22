@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conference Room Booking</title>
+    <link rel="stylesheet" href="./styles_add.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <img src="./logoSkipper.png" alt="Skipper logo" id="skipperLogo">
+            <h1>Welcome to Skipper's Reception Portal</h1>
+            <i class="fa fa-home" id="home"></i>
+        </header>
+        <main>
+            <section class="tabs">
+                <div id="conferenceTab" class="tab active-tab" onclick="showForm('conferenceForm')">Schedule Conference
+                </div>
+                <div id="updateTab" class="tab" onclick="showForm('updateForm')">Update Conference</div>
+                <div id="cancelTab" class="tab" onclick="showForm('cancelForm')">Cancel Conference</div>
+            </section>
+        </main>
+        <main>
+            <section id="conferenceFormSection" class="form-section active-form">
+                <form id="conferenceForm" autocomplete="on">
+                    <h3>Schedule Conference</h3>
+                    <label for="name_of_person">Name Of Person:</label>
+                    <input type="text" name="name_of_person" id="name_of_person"
+                        placeholder="Enter Full Name Of Person Correctly" required>
+
+                    <label for="date">Date:</label>
+                    <input type="date" name="date" id="conferenceFormDate" placeholder="" required>
+
+
+                    <label for="room_no">Room No:</label>
+                    <div>
+                        <select name="room_no" id="room_no">
+                            <option value="Tirumala 8th Floor Conference Room" selected>Tirumala 8th Floor Conference
+                                Room</option>
+                            <option value="Tirumala 7th Floor Conference Room 1">Tirumala 7th Floor Conference Room 1
+                            </option>
+                            <option value="Tirumala 7th Floor Conference Room 2">Tirumala 7th Floor Conference Room 2
+                            </option>
+                            <option value="Tirumala 12th Floor Conference Room">Tirumala 12th Floor Conference Room
+                            </option>
+                            <option value="Jangalpur SL1 Conference Room">Jangalpur SL1 Conference Room</option>
+                            <option value="Jangalpur BCTL Conference Room">Jangalpur BCTL Conference Room</option>
+                            <option value="Uluberia Conference Room">Uluberia Conference Room</option>
+                            <option value="Goraghata Conference Room">Goraghata Conference Room</option>
+                            <option value="Guwahati Conference Room">Guwahati Conference Room</option>
+                        </select>
+                        <img src="./check.png" id="view_slots" alt="View Conference Slots"
+                            style="width: 40px;height: 40px;margin-left: 10px;cursor: pointer;">
+                    </div>
+
+
+                    <label for="meeting_start_time">Meeting Start Time:</label>
+                    <div>
+                        <input type="number" name="hours_start" id="hours_start" placeholder="Hour" min="1" max="12"
+                            style="width: 80px; margin: 3px;" required>
+                        :
+                        <input type="number" name="minutes_start" id="minutes_start" placeholder="Minutes" min="0"
+                            max="59" style="width: 100px; margin: 3px;" required>
+                        <select id="ampm_start" name="ampm_start" style="width: 80px; margin: 3px;" required>
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+
+                    <label for="meeting_end_time">Meeting End Time:</label>
+                    <div>
+                        <input type="number" name="hours_end" id="hours_end" placeholder="Hour" min="1" max="12"
+                            style="width: 80px; margin: 3px;" required>
+                        :
+                        <input type="number" name="minutes_end" id="minutes_end" placeholder="Minutes" min="0" max="59"
+                            style="width: 100px; margin: 3px;" required>
+                        <select id="ampm_end" name="ampm_end" style="width: 80px; margin: 3px;" required>
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" style="margin-top: 10px;">Schedule Conference</button>
+                </form>
+            </section>
+
+            <section id="updateFormSection" class="form-section">
+                <form id="updateForm" autocomplete="on">
+                    <h3>Update Conference</h3>
+                    <label for="SL_NO">Serial Number:</label>
+                    <input type="number" name="SL_NO" id="SL_NO" placeholder="Enter Serial Number" required>
+
+                    <label for="updateField">Select Update Field:</label>
+                    <select id="updateField" name="updateField" required>
+                        <option value="name_of_person">Name Of Person</option>
+                        <option value="date">Date</option>
+                        <option value="room_no">Room No</option>
+                        <option value="meeting_start_time">Meeting Start Time</option>
+                        <option value="meeting_end_time">Meeting End Time</option>
+                    </select>
+
+                    <label for="updatedValue">Enter Updated Value:</label>
+                    <input type="text" name="updatedValue" spellcheck="false" id="updatedValue"
+                        placeholder="Enter Value">
+
+
+                    <div id="time_value" style="display: none;">
+                        <input type="number" name="hours__time" id="hours__time" placeholder="Hour" min="1" max="12"
+                            style="width: 80px; margin: 3px;">
+                        :
+                        <input type="number" name="minutes__time" id="minutes__time" placeholder="Minutes" min="0"
+                            max="59" style="width: 100px; margin: 3px;">
+                        <select id="ampm__time" name="ampm__time" style="width: 80px; margin: 3px;">
+                            <option value="AM">AM</option>
+                            <option value="PM">PM</option>
+                        </select>
+                    </div>
+                    <button type="submit" style="margin-top: 5px;">Update Conference</button>
+                </form>
+            </section>
+
+            <section id="cancelFormSection" class="form-section">
+                <form id="cancelForm" autocomplete="on">
+                    <h3>Cancel Conference</h3>
+                    <label for="SL_NO">Serial Number:</label>
+                    <input type="number" name="SL__NO" id="SL__NO" placeholder="Enter Serial Number" required>
+
+                    <button type="submit" style="margin-top: 5px;">Cancel Conference</button>
+                </form>
+            </section>
+        </main>
+
+        <div id="successModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="closeModal">&times;</span>
+                <h3>Meeting Schedules</h3>
+                <div id="meeting_schedules"></div>
+            </div>
+        </div>
+        <footer>
+            <p>&copy; 2024 Skipper Limited</p>
+        </footer>
+    </div>
+    <script>
+        // Trigerring events when DOM content loaded
+        var employeeId, userLocation, username, userType;
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const sessionResponse = await fetch('/sessionData');
+                const sessionData = await sessionResponse.json();
+                employeeId = sessionData['employeeId'];
+                userLocation = sessionData['userLocation'];
+                username = sessionData['username'];
+                userType = sessionData['userType'];
+                // console.log(sessionData);
+            } catch (error) {
+                console.error('Error fetching session data:', error);
+            }
+
+            if (!employeeId || !userLocation || !username || !userType) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Go to home page
+        document.getElementById('home').addEventListener('click', function () {
+            window.location.href = 'home.html';
+        });
+
+        // Go the Company's website
+        document.getElementById('skipperLogo').addEventListener('click', function () {
+            window.location.href = 'https://www.skipperlimited.com/';
+        });
+
+
+        // Customize the update field input according to choice
+        const updateFieldElement = document.getElementById('updateField');
+        const updatedValueElement = document.getElementById('updatedValue');
+        updateFieldElement.addEventListener('change', function () {
+            const updateField = updateFieldElement.value;
+            updatedValueElement.value = '';
+            if (updateField === 'date') {
+                updatedValueElement.setAttribute('type', 'date');
+                document.getElementById('time_value').style.display = 'none';
+                updatedValueElement.style.display = 'block';
+            }
+            else if (updateField === 'meeting_start_time' || updateField == 'meeting_end_time') {
+                updatedValueElement.setAttribute('type', 'time');
+                document.getElementById('time_value').style.display = 'block';
+                updatedValueElement.style.display = 'none';
+            }
+            else if (updateField === 'room_no') {
+                updatedValueElement.setAttribute('type', 'text');
+                document.getElementById('time_value').style.display = 'none';
+                updatedValueElement.style.display = 'block';
+            }
+            else {
+                updatedValueElement.setAttribute('type', 'text');
+                document.getElementById('time_value').style.display = 'none';
+                updatedValueElement.style.display = 'block';
+            }
+        });
+
+        // Switch between forms
+        function showForm(formId) {
+            const forms = document.querySelectorAll('.form-section');
+            forms.forEach(form => form.classList.remove('active-form'));
+
+            document.getElementById(formId + 'Section').classList.add('active-form');
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active-tab'));
+            var activeTab = "";
+            if (formId == 'conferenceForm') {
+                activeTab = "conferenceTab";
+            }
+            else if (formId == 'updateForm') {
+                activeTab = "updateTab";
+            }
+            else if (formId == 'cancelForm') {
+                activeTab = "cancelTab";
+            }
+            document.getElementById(activeTab).classList.add('active-tab');
+        }
+
+        // Toggle modal visibility
+        var modal = document.getElementById("successModal");
+        var closeModal = document.getElementById("closeModal");
+        function showModal() {
+            modal.style.display = "block";
+        }
+        closeModal.onclick = function () {
+            modal.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // View already booked slots according to date and room_no
+        document.getElementById('view_slots').addEventListener('click', async (e) => {
+            e.preventDefault();
+            const meeting_schedules = document.getElementById('meeting_schedules');
+            const date = document.getElementById('conferenceFormDate').value;
+            const room_no = document.getElementById('room_no').value;
+            if (userType === 'Receptionist') {
+
+
+                try {
+                    const response = await fetch(`/getConferenceBookings/${date}/${room_no}`, {
+                        method: 'GET',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    const data = await response.json();
+                    if (response.ok) {
+                        console.log(data);
+
+                        meeting_schedules.innerHTML = '';
+
+
+                        const tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SL NO</th>
+                            <th>Name Of Person</th>
+                            <th>Location</th>
+                            <th>Room No</th>
+                            <th>Meeting Start Time</th>
+                            <th>Meeting End Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(meeting => `
+                            <tr>
+                                <td>${meeting.sl_no || ''}</td>
+                                <td>${meeting.name_of_person || ''}</td>
+                                <td>${meeting.location || ''}</td>
+                                <td>${meeting.room_no || ' '}</td>
+                                <td>${meeting.meeting_start_time || ' '}</td>
+                                <td>${meeting.meeting_end_time || ' '}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+                        meeting_schedules.innerHTML = tableHTML;
+                    } else {
+                        meeting_schedules.innerHTML = `<p>${data.message}</p>`;
+                    }
+                    showModal();
+                } catch (error) {
+                    console.error('Error:', error);
+                    resultDiv.innerHTML = '<p>An error occurred while searching for the visitor.</p>';
+                }
+            }
+            else {
+                alert('You are not authorized to view already booked meeting slots');
+            }
+        });
+
+        // Conference room booking
+        document.getElementById('conferenceForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name_of_person = document.getElementById('name_of_person').value;
+            const date = document.getElementById('conferenceFormDate').value;
+            const room_no = document.getElementById('room_no').value;
+            const hours_start = document.getElementById('hours_start').value;
+            const minutes_start = document.getElementById('minutes_start').value;
+            const ampm_start = document.getElementById('ampm_start').value;
+            const hours_end = document.getElementById('hours_end').value;
+            const minutes_end = document.getElementById('minutes_end').value;
+            const ampm_end = document.getElementById('ampm_end').value;
+            const formData = {
+                name_of_person, date, room_no, hours_start, hours_end,
+                minutes_start, minutes_end, ampm_start, ampm_end, userLocation,username
+            };
+
+            if (userType === 'Receptionist') {
+                fetch(`/bookConferenceRoom`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => {
+                        // console.log('Response status:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        // console.log('Data from response:', data);
+                        document.getElementById('conferenceForm').reset();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+            else {
+                alert('You are not authorized to update the visitor');
+            }
+        });
+
+        // Update visitor info
+        document.getElementById('updateForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const SL_NO = document.getElementById('SL_NO').value;
+            const updateField = document.getElementById('updateField').value;
+            const updatedValue = document.getElementById('updatedValue').value;
+            const hours_time = document.getElementById('hours__time').value;
+            const minutes_time = document.getElementById('minutes__time').value;
+            const ampm_time = document.getElementById('ampm__time').value;
+
+            const formData = {
+                SL_NO, updateField, updatedValue, hours_time, minutes_time, ampm_time
+            };
+
+            if (userType === 'Receptionist') {
+                fetch(`/updateMeetingInfo`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => {
+                        // console.log('Response status:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        // console.log('Data from response:', data);
+                        document.getElementById('updateForm').reset();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+            else {
+                alert('You are not authorized to update the meeting info');
+            }
+        });
+
+        // Cancel the meeting
+        document.getElementById('cancelForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const SL_NO = document.getElementById('SL__NO').value;
+
+            const formData = {
+                SL_NO
+            };
+
+            if (userType === 'Receptionist') {
+                fetch(`/cancelMeeting`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => {
+                        // console.log('Response status:', response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        // console.log('Data from response:', data);
+                        document.getElementById('cancelForm').reset();
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                    });
+            }
+            else {
+                alert('You are not authorized to update the meeting info');
+            }
+        });
+
+        // Timer function
+        // When five minutes of idleness end, trigger auto logout
+        var IdealTimeOut = 300;
+        var idleSecondsTimer = null;
+        var idleSecondsCounter = 0;
+        document.onclick = function () { idleSecondsCounter = 0; };
+        document.onmousemove = function () { idleSecondsCounter = 0; };
+        document.onkeypress = function () { idleSecondsCounter = 0; };
+        idleSecondsTimer = window.setInterval(CheckIdleTime, 1000);
+
+        function CheckIdleTime() {
+            idleSecondsCounter++;
+            if (idleSecondsCounter >= IdealTimeOut) {
+                fetch('/logout')
+                    .then(response => response.json())
+                    .catch(err => console.error('Error destroying session data:', err));
+                window.clearInterval(idleSecondsTimer);
+                alert("Your Session has expired. Please login again.");
+                window.location.href = "login.html";
+            }
+        }
+
+        // When visibility change occur, trigger auto logout
+        document.addEventListener("visibilitychange", function () {
+            if (idleSecondsCounter >= 80) {
+                fetch('/logout')
+                    .then(response => response.json())
+                    .catch(err => console.error('Error destroying session data:', err));
+                window.clearInterval(idleSecondsTimer);
+                window.location.href = "login.html";
+            }
+        });
+    </script>
+</body>
+
+</html>

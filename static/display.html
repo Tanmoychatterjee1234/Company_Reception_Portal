@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display Visitor</title>
+    <link rel="stylesheet" href="./styles_display.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <img src="./logoSkipper.png" alt="Skipper logo" id="skipperLogo">
+            <h1>Welcome to Skipper's Reception Portal</h1>
+            <i class="fa fa-home" id="home"></i>
+        </header>
+        <main>
+            <section class="tabs">
+                <div id="downloadTab" class="tab active-tab" onclick="showForm('downloadForm')">Download Visitors</div>
+                <div id="displayTab" class="tab" onclick="showForm('displayForm')">Display Visitors</div>
+            </section>
+        </main>
+        <main>
+            <section id="downloadFormSection" class="form-section active-form">
+                <form id="downloadForm" action="/downloadAllVisitors" method="get" autocomplete="off">
+                    <h3>Download Visitors</h3>
+                    <button type="submit" style="margin-top: 10px;">Download Visitors</button>
+                </form>
+            </section>
+            <section id="displayFormSection" class="form-section">
+                <form id="displayForm"  autocomplete="off">
+                    <h3>Display Visitors</h3>
+                    <button type="submit" style="margin-top: 10px;">Display Visitors</button>
+                </form>
+            </section>
+        </main>
+        <div class="message" id="result"></div>
+        <footer>
+            <p>&copy; 2024 Skipper Limited</p>
+        </footer>
+    </div>
+    <script>
+        // Triggering events when DOM Content Loaded
+        var employeeId, userLocation, username, userType;
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                const sessionResponse = await fetch('/sessionData');
+                const sessionData = await sessionResponse.json();
+                employeeId = sessionData['employeeId'];
+                userLocation = sessionData['userLocation'];
+                username = sessionData['username'];
+                userType = sessionData['userType'];
+                // console.log(sessionData);
+            } catch (error) {
+                console.error('Error fetching session data:', error);
+            }
+
+            if (!employeeId || !userLocation || !username || !userType) {
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Go to home page
+        document.getElementById('home').addEventListener('click', function () {
+            window.location.href = 'home.html';
+        });
+
+        // Go the Company's website
+        document.getElementById('skipperLogo').addEventListener('click', function () {
+            window.location.href = 'https://www.skipperlimited.com/';
+        });
+
+        // Switch between forms
+        function showForm(formId) {
+            const resultDiv = document.getElementById("result");
+            const forms = document.querySelectorAll('.form-section');
+            forms.forEach(form => form.classList.remove('active-form'));
+
+            document.getElementById(formId + 'Section').classList.add('active-form');
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active-tab'));
+            var activeTab = "";
+            if (formId == 'downloadForm') {
+                activeTab = "downloadTab";
+                resultDiv.style.display = 'none';
+            }
+            else if (formId == 'displayForm') {
+                activeTab = "displayTab";
+                resultDiv.style.display = 'block';
+            }
+            console.log(activeTab);
+            document.getElementById(activeTab).classList.add('active-tab');
+        }
+
+        // Submit download form
+        const downloadForm = document.getElementById('downloadForm');
+        downloadForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            try {
+                response = await fetch(`/downloadAllVisitors`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                });
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'visitors.xlsx';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                }
+                else if (response.status == '404') {
+                    alert('No visitors found');
+                    return;
+                }
+            }
+            catch (error) {
+                console.error('Error downloading visitors:', error);
+                alert('Failed to download visitors, Error generating Excel file');
+                return;
+            }
+        });
+
+        // Submit display form
+        const displayForm = document.getElementById('displayForm');
+        displayForm.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            const resultDiv = document.getElementById("result");
+
+
+            try {
+                const response = await fetch(`/displayAllVisitors/${userLocation}/${userType}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+
+                    resultDiv.innerHTML = '';
+
+
+                    const tableHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Sl No</th>
+                            <th>Location</th>
+                            <th>Date</th>
+                            <th>Name of Visitor</th>
+                            <th>Number of Visitors</th>
+                            <th>Address</th>
+                            <th>Purpose</th>
+                            <th>To Whom Meet</th>
+                            <th>Scheduled Time</th>
+                            <th>Time In</th>
+                            <th>Time Out</th>
+                            <th>Duration</th>
+                            <th>Mobile No</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${data.map(visitor => `
+                            <tr>
+                                <td>${visitor.SL_NO || ''}</td>
+                                <td>${visitor.Location || ''}</td>
+                                <td>${visitor.Date || ''}</td>
+                                <td>${visitor.Name_Of_Visitor || ' '}</td>
+                                <td>${visitor.Number_Of_Visitors || ' '}</td>
+                                <td>${visitor.Address || ' '}</td>
+                                <td>${visitor.Purpose || ' '}</td>
+                                <td>${visitor.To_Whom_Meet || ' '}</td>
+                                <td>${visitor.Scheduled_Time || ' '}</td>
+                                <td>${visitor.Time_In || ' '}</td>
+                                <td>${visitor.Time_Out || ' '}</td>
+                                <td>${visitor.Duration || ' '}</td>
+                                <td>${visitor.Mobile_No || ' '}</td>
+                                <td>${visitor.VisitorStatus || ' '}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+
+                    resultDiv.innerHTML = tableHTML;
+                } else {
+                    resultDiv.innerHTML = `<p>${data.message}</p>`; // Display error message
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = '<p>An error occurred while searching for the visitors.</p>';
+            }
+        });
+
+          // Timer function
+        // When five minutes of idleness end, trigger auto logout
+        var IdealTimeOut = 300;
+        var idleSecondsTimer = null;
+        var idleSecondsCounter = 0;
+        document.onclick = function () { idleSecondsCounter = 0; };
+        document.onmousemove = function () { idleSecondsCounter = 0; };
+        document.onkeypress = function () { idleSecondsCounter = 0; };
+        idleSecondsTimer = window.setInterval(CheckIdleTime, 1000);
+
+        function CheckIdleTime() {
+            idleSecondsCounter++;
+            if (idleSecondsCounter >= IdealTimeOut) {
+                fetch('/logout')
+                    .then(response => response.json())
+                    .catch(err => console.error('Error destroying session data:', err));
+                window.clearInterval(idleSecondsTimer);
+                alert("Your Session has expired. Please login again.");
+                window.location.href = "login.html";
+            }
+        }
+
+        // When visibility change occur, trigger auto logout
+        document.addEventListener("visibilitychange", function () {
+            if (idleSecondsCounter >= 80) {
+                fetch('/logout')
+                    .then(response => response.json())
+                    .catch(err => console.error('Error destroying session data:', err));
+                window.clearInterval(idleSecondsTimer);
+                window.location.href = "login.html";
+            }
+        });
+    </script>
+</body>
+
+</html>

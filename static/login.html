@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reception Portal Login</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Welcome Back</h2>
+            <p>Login to your Reception Portal</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <label for="location">Select Location</label>
+                    <select id="location" name="location" required>
+                        <option value="" disabled selected>Select location</option>
+                        <option value="Tirumala Office">Tirumala Office</option>
+                        <option value="Loudon Street Office">Loudon Street Office</option>
+                        <option value="Jangalpur Plant SL1">Jangalpur Plant SL1</option>
+                        <option value="Jangalpur Plant BCTL">Jangalpur Plant BCTL</option>
+                        <option value="Uluberia Plant">Uluberia Plant</option>
+                        <option value="Goraghata Plant">Goraghata Plant</option>
+                        <option value="Guwahati Plant">Guwahati Plant</option>
+                    </select>
+                    <p class="error-message" id="locationError"></p>
+                </div>
+                <div class="input-group">
+                    <label for="employeeId">Employee Id</label>
+                    <input type="text" name="employeeId" id="employeeId" placeholder="Enter your employee Id" required>
+                    <p class="error-message" id="employeeIdError"></p>
+                </div>
+                <div class="input-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                    <i class="fa fa-eye" aria-hidden="true" id="showHidePassword" style="position: absolute; font-size:25px; right: 10px;
+                                                    top: 45%; cursor: pointer;"></i>
+                    <p class="error-message" id="passwordError"></p>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+            <p class="forgot-password"><a href="#">Forgot password?</a></p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="errorModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeModal">&times;</span>
+            <h2>Error occurred!!</h2>
+            <p id="error-message"></p>
+        </div>
+    </div>
+
+    <script>
+        // Toggle modal visibility
+        var modal = document.getElementById("errorModal");
+        var closeModal = document.getElementById("closeModal");
+        function showModal() {
+            modal.style.display = "block";
+        }
+        closeModal.onclick = function () {
+            modal.style.display = "none";
+        }
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Submit login form
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const location = document.getElementById('location').value;
+            const employeeId = document.getElementById('employeeId').value;
+            const password = document.getElementById('password').value;
+            fetch(`/loginUser/${location}/${employeeId}/${password}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+            }).then(response => response.json()).then(data => {
+                const errorMessage = document.getElementById('error-message');
+                if (data.message === 'Successful login') {
+                    window.location.href = 'home.html';
+                }
+                else {
+                    errorMessage.textContent = data.message;
+                    showModal();
+                }
+            });
+        });
+
+        // Toggle the password visibility
+        const showHidePass = document.getElementById('showHidePassword');
+        const userPassword = document.getElementById('password');
+        showHidePass.addEventListener('mousedown', function (e) {
+            userPassword.setAttribute('type', 'text');
+            this.classList.add('fa-eye-slash');
+        });
+
+        showHidePass.addEventListener('mouseup', function (e) {
+            userPassword.setAttribute('type', 'password');
+            this.classList.remove('fa-eye-slash');
+        });
+
+        showHidePass.addEventListener('mouseleave', function (e) {
+            userPassword.setAttribute('type', 'password');
+            this.classList.remove('fa-eye-slash');
+        });
+    </script>
+</body>
+
+</html>

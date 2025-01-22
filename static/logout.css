@@ -1,0 +1,145 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow: hidden;
+    background: #f4f7fa; 
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+.container {
+    max-width: 900px;
+    width: 100%;
+    padding: 50px;
+    background: #fff; 
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1); 
+    border-radius: 16px; 
+    text-align: center;
+    position: relative;
+}
+
+
+header {
+    color: #4e2a84;
+    padding: 25px;
+    border-radius: 16px 16px 0 0;
+    margin-bottom: 30px;
+}
+
+header h1 {
+    font-size: 26px; 
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+
+main {
+    padding: 20px;
+}
+
+
+.form-section {
+    margin-top: 40px;
+}
+
+h2 {
+    font-size: 24px; 
+    color: #4e2a84;
+    font-weight: 700;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #4C9DF6; 
+    padding-bottom: 8px;
+}
+
+p {
+    font-size: 18px;
+    color: #4e2a84;
+    margin-bottom: 30px;
+}
+
+button {
+    width: 220px;
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #2575fc, #6a11cb);
+    transform: translateY(-3px);
+}
+
+button:active {
+    transform: translateY(1px);
+}
+
+footer {
+    position: absolute;
+    bottom: 15px;
+    font-size: 14px;
+    color: #777;
+    text-align: center;
+    width: 100%;
+}
+
+footer a {
+    color: #4C9DF6; 
+    text-decoration: none;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+
+body {
+    background: linear-gradient(135deg, #f4f7fa 0%, #cfe2f3 100%);
+}
+
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+.container {
+    animation: fadeIn 1s ease-out;
+}
+
+
+@media (max-width: 600px) {
+    .container {
+        padding: 30px; 
+    }
+
+    header h1 {
+        font-size: 22px;
+    }
+
+    h2 {
+        font-size: 20px; 
+    }
+
+    button {
+        font-size: 16px; 
+        padding: 14px 28px; 
+    }
+}

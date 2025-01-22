@@ -1,0 +1,522 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7fb;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1300px;
+    margin: auto;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+header {
+    color: #2d2d2d;
+    padding: 15px;
+    background: linear-gradient(45deg, #4b79a1, #283e51);
+    border-radius: 10px 10px 0 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: bold;
+    flex-wrap: nowrap;
+}
+
+#skipperLogo {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+nav {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 5px;
+    margin: 2px;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+li {
+    margin: 0 10px;
+    display: inline-flex;
+    align-items: center;
+}
+
+li img {
+    max-width: 50px;
+    max-height: 50px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+li a {
+    color: #fff;
+    text-align: center;
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    transition: background-color 0.3s, transform 0.3s, color 0.3s, border-color 0.3s;
+}
+
+li a:hover {
+    background-color: #1a1816;
+    color: #fff;
+    transform: translateY(-2px);
+    border-color: #24211f;
+}
+
+#profileImage {
+    width: 45px;
+    height: 45px;
+    border-radius: 45%;
+    background-color: #054565;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    cursor: pointer;
+    font-size: 22px;
+    margin-left: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: 2px solid white;
+}
+
+#userDropDown {
+    max-width: 20px;
+    max-height: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Basic styling for the dropdown container */
+#dropdownMenu {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 140px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    border-radius: 5px;
+    left: 90px;
+    bottom: -85px;
+    margin-top: 5px;
+    /* Optional: adds extra space between the parent and the dropdown */
+}
+
+/* Styling for the dropdown items */
+#dropdownMenu a {
+    color: black;
+    padding: 12px 16px;
+    margin-top: 3px;
+    text-decoration: none;
+    display: block;
+    border-radius: 25px;
+}
+
+#status {
+    background-color: #0f0e0e;
+}
+
+/* Hover effect on the dropdown items */
+#dropdownMenu a:hover {
+    background-color: #ddd;
+}
+
+#barChartTitle {
+    width: 100%;
+    max-width: 200px;
+    margin: auto auto;
+    margin-top: 5px;
+    color: #fff;
+    text-align: center;
+    font-weight: bold;
+    padding: 12px 20px;
+    text-decoration: none;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    transition: background-color 0.3s, transform 0.3s, color 0.3s, border-color 0.3s;
+    background-color: rgb(69, 66, 66);
+}
+
+#myChart {
+    display: none;
+}
+
+#barChartTitle {
+    display: none;
+}
+
+main {
+    padding: 30px;
+    margin-top: 30px;
+}
+
+#welcomeMessage {
+    font-size: 20px;
+    color: #fff;
+    margin-top: 5px;
+    padding: 5px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+#userId {
+    color: white;
+    margin-bottom: 5px;
+}
+
+.options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    justify-items: center;
+}
+
+.option-card {
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 13px;
+    text-align: center;
+    width: 250px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.option-icon {
+    width: 50px;
+    height: 50px;
+    margin-bottom: 20px;
+    object-fit: contain;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #4b79a1;
+    border: 2px solid transparent;
+    border-radius: 45px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.5s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #2d3e56;
+    transform: translateY(-2px);
+}
+
+button:active {
+    background-color: #2d3e56;
+    transform: translateY(0);
+}
+
+#timemssge {
+    margin-bottom: 5px;
+}
+
+#timeOut {
+    background-color: yellow;
+}
+
+/* Modal Styles */
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    overflow: auto;
+    padding-top: 50px;
+    transition: opacity 0.3s ease;
+    animation: fadeIn 0.5s ease-out;
+}
+
+
+.modal-content {
+    background-color: #ffffff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    align-items: center;
+    max-width: 400px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.5s ease-out;
+    position: relative;
+}
+
+.close-button {
+    color: #aaa;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.close-button:hover {
+    color: #333;
+    cursor: pointer;
+}
+
+#info-heading {
+    font-family: 'Arial', sans-serif;
+    font-size: 22px;
+    color: #2980b9;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #3498db;
+    text-decoration-thickness: 3px;
+}
+
+
+.user-details {
+    font-family: 'Arial', sans-serif;
+    font-size: 16px;
+    color: #2c3e50;
+    line-height: 1.6;
+}
+
+.user-details p {
+    margin: 12px 0;
+}
+
+.user-details strong {
+    color: #e67e22;
+}
+
+
+.modal.show {
+    display: block;
+}
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+}
+
+th,
+td {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+
+td {
+    background-color: white;
+    color: #333
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #ddd;
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes slideUp {
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+
+footer {
+    text-align: center;
+    margin-top: 150px;
+    font-size: 14px;
+    color: #0f0e0e;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* Media Queries */
+@media (max-width: 1024px) {
+    .container {
+        padding: 20px;
+    }
+
+    header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    li {
+        margin: 8px 0;
+    }
+
+    .options {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .option-card {
+        width: 100%;
+    }
+
+    #skipperLogo {
+        max-width: 130px;
+        max-height: 130px;
+    }
+
+    #welcomeMessage {
+        font-size: 18px;
+    }
+
+    footer {
+        font-size: 12px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    header {
+        padding: 10px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .options {
+        grid-template-columns: 1fr;
+    }
+
+    .option-card {
+        width: 100%;
+        padding: 10px;
+    }
+
+    #skipperLogo {
+        max-width: 100px;
+        max-height: 100px;
+    }
+
+    #welcomeMessage {
+        font-size: 16px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    footer {
+        font-size: 10px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    li a {
+        padding: 8px 12px;
+        font-size: 14px;
+        margin: 5px 5px;
+    }
+
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .option-card {
+        width: 100%;
+        padding: 8px;
+    }
+
+    .options {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    #skipperLogo {
+        max-width: 80px;
+        max-height: 80px;
+    }
+
+    #welcomeMessage {
+        font-size: 14px;
+    }
+
+    footer {
+        font-size: 8px;
+        padding: 8px;
+    }
+}
