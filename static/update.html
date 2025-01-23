@@ -333,6 +333,11 @@
             const ampm__time = document.getElementById('ampm__time').value;
             const formData = { updateField, updatedValue, sl_no, hours__time, minutes__time, ampm__time };
             if (userType === 'Receptionist') {
+                if ((updateField === "time_out" || updateField === "time_in" || updateField === "scheduled_time")
+                    && (hours__time.length !== 2 || minutes__time.length !== 2)) {
+                    alert('Please note, the time format you’ve entered is incorrect. Kindly enter the time in the format HH:MM.');
+                    return;
+                }
                 fetch(`/update`, {
                     method: 'POST',
                     headers: {

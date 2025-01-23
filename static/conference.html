@@ -323,10 +323,14 @@
             const ampm_end = document.getElementById('ampm_end').value;
             const formData = {
                 name_of_person, date, room_no, hours_start, hours_end,
-                minutes_start, minutes_end, ampm_start, ampm_end, userLocation,username
+                minutes_start, minutes_end, ampm_start, ampm_end, userLocation, username
             };
 
             if (userType === 'Receptionist') {
+                if (hours_start.length !== 2 || hours_end.length !== 2 || minutes_start.length !== 2 || minutes_end !== 2) {
+                    alert('Please note, the time format you’ve entered is incorrect. Kindly enter the time in the format HH:MM.');
+                    return;
+                }
                 fetch(`/bookConferenceRoom`, {
                     method: 'POST',
                     headers: {
@@ -366,6 +370,11 @@
             };
 
             if (userType === 'Receptionist') {
+                if ((updateField === "meeting_start_time" || updateField === "meeting_end_time")
+                    && (hours_time.length !== 2 || minutes_time.length !== 2)) {
+                    alert('Please note, the time format you’ve entered is incorrect. Kindly enter the time in the format HH:MM.');
+                    return;
+                }
                 fetch(`/updateMeetingInfo`, {
                     method: 'POST',
                     headers: {
