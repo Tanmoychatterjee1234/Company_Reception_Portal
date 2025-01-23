@@ -214,11 +214,13 @@
             const ampm = document.getElementById('ampm').value;
             const duration = document.getElementById('duration').value;
             const mobile_no = document.getElementById('mobile_no').value;
-            if (hours.length !== 2 ||  minutes.length !== 2) {
-                alert('Please note, the time format you’ve entered is incorrect. Kindly enter the time in the format HH:MM.');
-            }
+
             var formData = { date, address, purpose, userLocation, number_of_visitors, name_of_visitor, to_whom_meet, hours, minutes, ampm, duration, mobile_no, username };
             if (userType === 'End User') {
+                if (hours.length !== 2 || minutes.length !== 2) {
+                    alert('Please note, the time format you’ve entered is incorrect. Kindly enter the time in the format HH:MM.');
+                    return ;
+                }
                 fetch(`/request`, {
                     method: 'POST',
                     headers: {
@@ -260,9 +262,6 @@
             const ampm_timeout = document.getElementById('ampm_timeout').value;
             const duration = document.getElementById('_duration').value;
             const mobile_no = document.getElementById('_mobile_no').value;
-            if (hours_timein.length !== 2 || hours_timeout.length !== 2 || minutes_timein.length !== 2 || minutes_timeout.length !== 2) {
-                alert('Please note, the time format you’ve entered is incorrect. Kindly enter the time in the format HH:MM.');
-            }
             const formData = {
                 date, name_of_visitor, number_of_visitors,
                 address, purpose, to_whom_meet,
@@ -271,6 +270,10 @@
             };
             // console.log(formData);
             if (userType === 'Receptionist') {
+                if (hours_timein.length !== 2 || hours_timeout.length !== 2 || minutes_timein.length !== 2 || minutes_timeout.length !== 2) {
+                    alert('Please note, the time format you’ve entered is incorrect. Kindly enter the time in the format HH:MM.');
+                    return ;
+                }
                 fetch(`/add`, {
                     method: 'POST',
                     headers: {
