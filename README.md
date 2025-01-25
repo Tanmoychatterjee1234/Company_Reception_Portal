@@ -1,2 +1,2 @@
 # Company_Reception_Portal
-This is the reception portal of a company
+This is the model reception portal of a company
