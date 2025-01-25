@@ -30,7 +30,8 @@
                     <li style="margin-left: 20px;">
                         <div id="userId"></div>
                     </li>
-                                        <li id="user-notifications" style="margin: 10px 10px;"><img src="./notification.png" alt="Notifications image" style="width: 40px;height: 40px;padding: 5px;"></li>
+                    <li id="user-notifications" style="margin: 10px 10px;"><img src="./notification.png"
+                            alt="Notifications image" style="width: 40px;height: 40px;padding: 5px;"></li>
                 </ul>
             </nav>
         </header>
@@ -354,13 +355,29 @@
                         console.error('Error:', error);
                     });
             }
-            else
-            {
+            else {
                 alert('You are not authorized to approve the visitor');
             }
         });
 
-        
+        // As soon as 'About' button is clicked, reception portal pdf is downloaded
+        document.getElementById('about').addEventListener('click', function (e) {
+            e.preventDefault();
+            fetch('/download/Reception-Portal-Pdf')
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+                    a.download = 'Reception-Portal-PPT.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                })
+                .catch(error => console.error('Error downloading PDF:', error));
+        });
+
         // Logout block
         document.getElementById('user-logout').addEventListener('click', async (e) => {
             e.preventDefault();

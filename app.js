@@ -789,7 +789,7 @@ app.post('/bookConferenceRoom', async (req, res) => {
     var date_time = current_date.toLocaleDateString() + ' ' + current_date.toLocaleTimeString() + ' Created';
     var transactionDate = date_time;
     var transactionCreatedDate = date_time;
-    var { name_of_person, date, room_no, hours_start, minutes_start, ampm_start, hours_end, minutes_end, ampm_end, userLocation,username } = req.body;
+    var { name_of_person, date, room_no, hours_start, minutes_start, ampm_start, hours_end, minutes_end, ampm_end, userLocation, username } = req.body;
     date = new Date(date);
     date = date.toLocaleDateString();
     var meeting_start_time = hours_start + ":" + minutes_start + " " + ampm_start;
@@ -825,7 +825,7 @@ app.post('/bookConferenceRoom', async (req, res) => {
     try {
         const [result] = await pool.execute(query, [
             name_of_person, userLocation, date, room_no, meeting_start_time, meeting_end_time,
-            transactionDate, transactionCreatedDate,username
+            transactionDate, transactionCreatedDate, username
         ]);
         notifier.notify({
             title: 'Salutations!',
@@ -935,6 +935,16 @@ app.post('/cancelMeeting', async (req, res) => {
         console.error('Error fetching bookings:', error);
         res.status(500).send('Error fetching bookings');
     }
+});
+
+// Reception portal pdf containing detailed info about working of the reception-portal
+app.get('/download/Reception-Portal-Pdf', async (req, res) => {
+    const filePath = path.join(__dirname, 'static', 'Reception_Portal_PPT.pdf'); // Adjust path as needed
+    res.download(filePath, 'Reception_Portal_PPT.pdf', (err) => {
+        if (err) {
+            console.error('Error during file download:', err);
+        }
+    });
 });
 
 // Start server on the given port

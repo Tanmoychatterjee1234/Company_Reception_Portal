@@ -1,79 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Upload Image</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Download PDF</title>
+  <link rel="stylesheet" href="demo.css">
 </head>
 <body>
-    <h1>Upload and View Image</h1>
-    
-    <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="image" required />
-        <button type="submit">Upload Image</button>
-    </form>
+  <button id="downloadBtn">Download PDF</button>
 
-    <h2>View Image by ID</h2>
-    <label for="imageId">Enter Image ID:</label>
-    <input type="text" id="imageId" placeholder="Enter image ID">
-    <button onclick="fetchImage()">View Image</button>
-
-    <br>
-    <h2>Uploaded Image:</h2>
-    <img id="imageDisplay" src="" alt="Image will appear here" style="max-width: 500px;"/>
-
-    <script>
-        // Handle form submission using JavaScript (AJAX)
-        const uploadForm = document.getElementById('uploadForm');
-
-        uploadForm.addEventListener('submit', function (event) {
-            event.preventDefault();
-
-            const formData = new FormData(uploadForm);
-
-            fetch('/upload', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.text())
-            .then(data => {
-                alert(data);  // Show success message
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error uploading image.');
-            });
-        });
-
-        // Fetch and display image by ID
-        function fetchImage() {
-            const imageId = document.getElementById('imageId').value;  // Get the image ID from input
-            const imageDisplay = document.getElementById('imageDisplay');
-
-            if (!imageId) {
-                alert("Please enter an image ID.");
-                return;
-            }
-
-            // Fetch the image from the server
-            fetch(`/image/${imageId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Image not found");
-                    }
-                    return response.blob();  // Convert response to a Blob (binary data)
-                })
-                .then(blob => {
-                    // Create a local URL for the image and display it
-                    const imageUrl = URL.createObjectURL(blob);
-                    // console.log(imageUrl);
-                    imageDisplay.src = imageUrl;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Error fetching image.');
-                });
-        }
-    </script>
+  <script src="demo.js"></script>
 </body>
 </html>

@@ -25,54 +25,28 @@
 // let weekday = date.toLocaleString('en-us', { weekday: 'long' });
 // console.log(weekday);
 
-import express from 'express';
-import { createConnection } from 'mysql';
-
-import { join } from 'path';
-
-// Initialize Express
-const app = express();
-
-// Setup MySQL connection
-const db = createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'your_database'
-});
-
-db.connect((err) => {
-    if (err) throw err;
-    console.log('Connected to MySQL database!');
-});
-
-// Configure Multer (for handling file uploads)
-const storage = memoryStorage();
-const upload = multer({ storage: storage });
-
-// Serve static files (for HTML form)
-app.use(express.static(join(__dirname, 'public')));
-
-// Route for uploading image
-app.post('/upload', upload.single('image'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }
-
-    const image = req.file.buffer;  // The image buffer
-    const imageName = req.file.originalname;
-
-    // Insert image into MySQL database
-    const query = 'INSERT INTO images (image_name, image_data) VALUES (?, ?)';
-    db.query(query, [imageName, image], (err, result) => {
+app.get('/download-pdf', (req, res) => {
+    const filePath = path.join(__dirname, 'files', 'sample.pdf'); // Adjust path as needed
+    res.download(filePath, 'sample.pdf', (err) => {
         if (err) {
-            return res.status(500).send('Error uploading image to the database.');
+            console.error('Error during file download:', err);
         }
-        res.send('Image uploaded successfully!');
     });
 });
 
-// Start the server
-app.listen(3000, () => {
-    console.log('Server is running on http://localhost:3000');
+document.getElementById('downloadBtn').addEventListener('click', function () {
+    fetch('/download-pdf')
+        .then(response => response.blob())
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = 'sample.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => console.error('Error downloading PDF:', error));
 });
+
