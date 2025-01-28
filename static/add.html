@@ -19,12 +19,12 @@
         </header>
         <main>
             <section class="tabs">
-                <div id="requestTab" class="tab active-tab" onclick="showForm('requestForm')">Request Visitor</div>
-                <div id="addTab" class="tab" onclick="showForm('addForm')">Add Visitor</div>
+                <div id="requestTab" class="tab" onclick="showForm('requestForm')">Request Visitor</div>
+                <div id="addTab" class="tab active-tab" onclick="showForm('addForm')">Add Visitor</div>
             </section>
         </main>
         <main>
-            <section id="requestFormSection" class="form-section active-form">
+            <section id="requestFormSection" class="form-section">
                 <form id="requestForm" autocomplete="on">
                     <h3>Request Visitor</h3>
                     <label for="date">Date:</label>
@@ -78,7 +78,7 @@
                     <button type="submit" style="margin-top: 10px;">Request Visitor</button>
                 </form>
             </section>
-            <section id="addFormSection" class="form-section">
+            <section id="addFormSection" class="form-section active-form">
                 <form id="addForm" autocomplete="on">
                     <h3>Add New Visitor</h3>
                     <label for="_date">Date:</label>
