@@ -18,7 +18,7 @@
             <div id="welcomeMessage">Welcome to Skipper's Reception Portal</div>
             <nav>
                 <ul style="margin-top: 3px;">
-
+                    <li id="weekly-visitor-trends" style="margin: 10px 10px;"><a href="#">Visitor Trends</a></li>
                     <li id="about" style="margin: 10px 10px;"><a href="#">About</a></li>
                     <li style="margin: 0px;">
                         <div class="profile-image" id="profileImage"></div>
@@ -35,9 +35,9 @@
                 </ul>
             </nav>
         </header>
-        <div id="barChartTitle">No of Visitors per day</div>
-        <canvas id="myChart"
-            style="width:100%;max-width:800px;height: 300px; margin: auto auto;padding: 5px;font-weight: bold;"></canvas>
+
+       
+
         <main>
             <div class="options">
                 <div class="option-card">
@@ -63,12 +63,21 @@
             </div>
         </main>
 
-        <!-- Modal -->
+        <!-- Modals -->
         <div id="infoModal" class="modal">
             <div class="modal-content">
                 <span class="close-button" id="closeModal">&times;</span>
                 <h2 id="info-heading"></h2>
                 <p id="info-message"></p>
+            </div>
+        </div>
+
+        <div id="visitorsPerDayModal"  class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="closeVisitorsPerDayModal">&times;</span>
+                <div id="barChartTitle">No of Visitors per day</div>
+                <canvas id="myChart"
+                    ></canvas>
             </div>
         </div>
 
@@ -109,78 +118,6 @@
         // Triggering events when DOM content loaded
         var employeeId, username, userLocation, userType;
         document.addEventListener('DOMContentLoaded', async () => {
-            // const response = await fetch(`/displayVisitorsDayWise`, {
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-Type': 'application/json',
-            //     }
-            // });
-
-            // const data = await response.json();
-            // if (response.ok && data.length == 7) {
-            //     document.getElementById('myChart').style.display = 'block';
-            //     document.getElementById('barChartTitle').style.display = 'block';
-            //     var xValues = [];
-            //     var yValues = [];
-            //     for (let i = data.length - 1; i >= 0; i--) {
-            //         let inputdate = data[i].date;
-            //         let [day, month, year] = inputdate.split('/').map(Number);
-            //         let date = new Date(year, month - 1, day);
-            //         let weekday = date.toLocaleString('en-us', { weekday: 'long' });
-            //         xValues.push(weekday);
-            //         yValues.push(data[i].number_of_visitors);
-            //     }
-            //     var barColors = ["red", "green", "blue", "orange", "brown", "yellow", "violet"];
-
-            //     new Chart("myChart", {
-            //         type: "bar",
-            //         data: {
-            //             labels: xValues,
-            //             datasets: [{
-
-            //                 axis: 'y',
-            //                 backgroundColor: barColors,
-            //                 data: yValues,
-            //                 barThickness: 65,
-            //             }]
-            //         },
-            //         options: {
-            //             responsive: true,
-            //             animation: {
-            //                 duration: 1000,
-            //             },
-            //             legend: { display: false },
-            //             title: {
-            //                 display: false,
-            //             },
-            //             scales: {
-            //                 yAxes: [{
-            //                     ticks: {
-            //                         stepSize: 5,
-            //                         beginAtZero: true,
-            //                         suggestedMax: 20
-            //                     }
-            //                 }]
-            //             },
-            //             plugins: {
-            //                 datalabels: {
-            //                     display: true,
-            //                     anchor: 'end',
-            //                     align: 'top',
-            //                     formatter: function (value) {
-            //                         return value;
-            //                     },
-            //                     font: {
-            //                         weight: 'bold',
-            //                         size: 14,
-            //                     },
-            //                     color: '#000',
-            //                 }
-            //             }
-            //         }
-            //     });
-            // }
-
             // Fetch session data
             try {
                 const sessionResponse = await fetch('/sessionData');
@@ -219,6 +156,7 @@
         });
 
         // Modal functions
+        // Show modal and hide modal
         var modal = document.getElementById("infoModal");
         var closeModal = document.getElementById("closeModal");
 
@@ -228,6 +166,16 @@
 
         closeModal.onclick = function () {
             modal.style.display = "none";
+        }
+
+        var vistorsPerDaymodal = document.getElementById("visitorsPerDayModal");
+        var closeVisitorsPerDayModal = document.getElementById("closeVisitorsPerDayModal");
+        function showVistorsPerDayModal() {
+            vistorsPerDaymodal.style.display = "block";
+        }
+
+        closeVisitorsPerDayModal.onclick = function () {
+            vistorsPerDaymodal.style.display = "none";
         }
 
         // Window click functions
@@ -273,6 +221,83 @@
             } catch (error) {
                 console.error('Error:', error);
             }
+        });
+
+        // Display the weekly visitor trends in bar chart
+        document.getElementById('weekly-visitor-trends').addEventListener('click',async(e)=>{
+            e.preventDefault();
+            const response = await fetch(`/displayVisitorsDayWise`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json();
+            if (response.ok && data.length == 7) {
+                document.getElementById('myChart').style.display = 'block';
+                document.getElementById('barChartTitle').style.display = 'block';
+                var xValues = [];
+                var yValues = [];
+                for (let i = data.length - 1; i >= 0; i--) {
+                    let inputdate = data[i].date;
+                    let [day, month, year] = inputdate.split('/').map(Number);
+                    let date = new Date(year, month - 1, day);
+                    let weekday = date.toLocaleString('en-us', { weekday: 'long' });
+                    xValues.push(weekday);
+                    yValues.push(data[i].number_of_visitors);
+                }
+                var barColors = ["red", "green", "blue", "orange", "brown", "yellow", "violet"];
+
+                new Chart("myChart", {
+                    type: "bar",
+                    data: {
+                        labels: xValues,
+                        datasets: [{
+
+                            axis: 'y',
+                            backgroundColor: barColors,
+                            data: yValues,
+                            barThickness: 65,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        animation: {
+                            duration: 1000,
+                        },
+                        legend: { display: false },
+                        title: {
+                            display: false,
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    stepSize: 5,
+                                    beginAtZero: true,
+                                    suggestedMax: 20
+                                }
+                            }]
+                        },
+                        plugins: {
+                            datalabels: {
+                                display: true,
+                                anchor: 'end',
+                                align: 'top',
+                                formatter: function (value) {
+                                    return value;
+                                },
+                                font: {
+                                    weight: 'bold',
+                                    size: 14,
+                                },
+                                color: '#000',
+                            }
+                        }
+                    }
+                });
+            }
+            showVistorsPerDayModal();
         });
 
         // Display Notifications
