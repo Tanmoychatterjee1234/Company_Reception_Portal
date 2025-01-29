@@ -697,13 +697,13 @@ app.get('/displayAllVisitors/:userLocation/:userType', async (req, res) => {
 });
 
 // Display visitors daywise to show the bar-chart of no of visitors per day
-app.get('/displayVisitorsDayWise', async (req, res) => {
-
+app.get('/displayVisitorsDayWise/:userLocation', async (req, res) => {
+    const userLocation = req.params.userLocation;
     var query = `SET sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''))`;
     await pool.execute(query);
 
     try {
-        query = `SELECT date, count(sl_no) as number_of_visitors FROM reception GROUP BY Date  ORDER BY sl_no DESC,date DESC LIMIT 7;`;
+        query = `SELECT date, count(sl_no) as number_of_visitors FROM reception WHERE Location = 'Tirumala Office' GROUP BY date ORDER BY number_of_visitors DESC, date DESC LIMIT 7;`;
         const [visitors] = await pool.execute(query);
         if (visitors.length > 0) {
             res.status(200).json(visitors);

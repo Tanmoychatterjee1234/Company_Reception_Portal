@@ -227,7 +227,7 @@
         // Display the weekly visitor trends in bar chart
         document.getElementById('weekly-visitor-trends').addEventListener('click',async(e)=>{
             e.preventDefault();
-            const response = await fetch(`/displayVisitorsDayWise`, {
+            const response = await fetch(`/displayVisitorsDayWise/${userLocation}`, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
