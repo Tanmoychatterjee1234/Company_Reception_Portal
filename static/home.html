@@ -18,8 +18,13 @@
             <div id="welcomeMessage">Welcome to Skipper's Reception Portal</div>
             <nav>
                 <ul style="margin-top: 3px;">
-                    <li id="about" style="margin: 15px 10px;"><img src="./about.png"
-                        alt="Visitor statistics image" style="width: 40px;height: 40px;padding: 5px;"></li>
+                    <li id="about" style="margin: 15px 10px;"><img src="./about.png" alt="Visitor statistics image"
+                            style="width: 40px;height: 40px;padding: 5px;"></li>
+
+                    <li id="weekly-visitor-trends" style="margin: 10px 10px;"><img src="./visitor-statistics.png"
+                            alt="Visitor statistics image" style="width: 40px;height: 40px;padding: 5px;"></li>
+                    <li id="user-notifications" style="margin: 10px 10px;"><img src="./notification.png"
+                            alt="Notifications image" style="width: 40px;height: 40px;padding: 5px;"></li>
                     <li style="margin: 0px;">
                         <div class="profile-image" id="profileImage"></div>
                         <div id="dropdownMenu" class="dropdown-content">
@@ -30,15 +35,11 @@
                     <li style="margin-left: 20px;">
                         <div id="userId"></div>
                     </li>
-                    <li id="weekly-visitor-trends" style="margin: 10px 10px;"><img src="./visitor-statistics.png"
-                        alt="Visitor statistics image" style="width: 40px;height: 40px;padding: 5px;"></li>
-                    <li id="user-notifications" style="margin: 10px 10px;"><img src="./notification.png"
-                            alt="Notifications image" style="width: 40px;height: 40px;padding: 5px;"></li>
                 </ul>
             </nav>
         </header>
 
-       
+
 
         <main>
             <div class="options">
@@ -74,12 +75,11 @@
             </div>
         </div>
 
-        <div id="visitorsPerDayModal"  class="modal">
+        <div id="visitorsPerDayModal" class="modal">
             <div class="modal-content">
                 <span class="close-button" id="closeVisitorsPerDayModal">&times;</span>
                 <div id="barChartTitle">No of Visitors per day</div>
-                <canvas id="myChart"
-                    ></canvas>
+                <canvas id="myChart"></canvas>
             </div>
         </div>
 
@@ -226,7 +226,7 @@
         });
 
         // Display the weekly visitor trends in bar chart
-        document.getElementById('weekly-visitor-trends').addEventListener('click',async(e)=>{
+        document.getElementById('weekly-visitor-trends').addEventListener('click', async (e) => {
             e.preventDefault();
             const response = await fetch(`/displayVisitorsDayWise/${userLocation}`, {
                 method: 'GET',
