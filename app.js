@@ -733,11 +733,11 @@ app.get('/downloadAllVisitors', async (req, res) => {
         if (!results || results.length === 0) {
             return res.status(404).json({ message: 'No visitors found' });
         }
-        var data = [["SL_NO", "Date", "Name_Of_Visitor", "Number_Of_Visitors", "Address", "Purpose", "To_Whom_Meet", "Scheduled_Time", "Time_In", "Time_Out", "Duration", "Mobile_No", "TransactionDate", "TransactionCreatedDate", "Status"]];
+        var data = [["SL_NO", "Date", "Location", "Name_Of_Visitor", "Number_Of_Visitors", "Address", "Purpose", "To_Whom_Meet", "Scheduled_Time", "Time_In", "Time_Out", "Duration", "Mobile_No", "TransactionDate", "TransactionCreatedDate", "Status", "TransactionCreatedBy"]];
         results.forEach(row => {
-            data.push([row["SL_NO"], row["Date"], row["Name_Of_Visitor"], row["Number_Of_Visitors"],
+            data.push([row["SL_NO"], row["Date"], row["Location"], row["Name_Of_Visitor"], row["Number_Of_Visitors"],
             row["Address"], row["Purpose"], row["To_Whom_Meet"], row["Scheduled_Time"], row["Time_In"],
-            row["Time_Out"], row["Duration"], row["Mobile_No"], row["TransactionDate"], row["TransactionCreatedDate"], row["VisitorStatus"]]);
+            row["Time_Out"], row["Duration"], row["Mobile_No"], row["TransactionDate"], row["TransactionCreatedDate"], row["VisitorStatus"], row["TransactionCreatedBy"]]);
         });
         var worksheet = xlsx.utils.aoa_to_sheet(data),
             workbook = xlsx.utils.book_new();
@@ -750,7 +750,7 @@ app.get('/downloadAllVisitors', async (req, res) => {
 
         res.status(200).send(excelBuffer);
 
-        console.log('Excel file sent successfully.');
+       // console.log('Excel file sent successfully.');
         notifier.notify({
             title: 'Salutations!',
             message: 'Visitor details downloaded',
