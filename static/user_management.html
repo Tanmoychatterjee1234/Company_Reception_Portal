@@ -53,19 +53,19 @@
                         <option value="End User">End User</option>
                         <option value="Admin User">Admin User</option>
                     </select>
-
                     <label for="password">New Password</label>
-                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    <i class="fa fa-eye" aria-hidden="true" id="showHidePassword" style="position: absolute; font-size:24px; right: 51%;;
-                                                        top: 132%; cursor: pointer;"></i>
-
-
-
+                    <div style="position: relative; width: 100%;">
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required style="padding-right: 30px;">
+                        <i class="fa fa-eye" aria-hidden="true" id="showHidePassword" style="position: absolute; font-size: 24px; left: 45%; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                    </div>
+                    
                     <label for="confpassword">Confirm Password</label>
-                    <input type="password" id="confpassword" name="confpassword" placeholder="Enter your password"
-                        required>
-                    <i class="fa fa-eye" aria-hidden="true" id="showHideConfPassword" style="position: absolute; font-size:24px; right: 51%;
-                                                        top: 150%; cursor: pointer;"></i>
+                    <div style="position: relative; width: 100%;">
+                        <input type="password" id="confpassword" name="confpassword" placeholder="Enter your password" required style="padding-right: 30px;">
+                        <i class="fa fa-eye" aria-hidden="true" id="showHideConfPassword" style="position: absolute; font-size: 24px; left: 45%; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                    </div>
+                    
+
 
                     <button type="submit" class="submit-btn">Register User</button>
                 </form>
