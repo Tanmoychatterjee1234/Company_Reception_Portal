@@ -46,124 +46,124 @@ app.use(session({
 
 // Creation and deletion of tables
 // Create users table 
-app.get('/create/usersTable', async (req, res) => {
-    let query = `CREATE TABLE Users (
-    SL_NO INT AUTO_INCREMENT,
-    Location TEXT,
-    EmployeeId TEXT,
-    Username TEXT,
-    Password TEXT,
-    UserType TEXT,
-    TransactionDate TEXT,
-    TransactionCreatedDate TEXT,
-    PRIMARY KEY(SL_NO)
-)`;
-    await pool.execute(query);
-    query = `ALTER TABLE Reception AUTO_INCREMENT = 1`;
-    await pool.execute(query);
-    const [result] = await pool.execute(query);
-    notifier.notify({
-        title: 'Salutations!',
-        message: 'Users table created successfully!!',
-        icon: path.join(__dirname, 'static', 'table.png'),
-        sound: true,
-        wait: true
-    });
-    res.redirect('/home');
-});
+// app.get('/create/usersTable', async (req, res) => {
+//     let query = `CREATE TABLE Users (
+//     SL_NO INT AUTO_INCREMENT,
+//     Location TEXT,
+//     EmployeeId TEXT,
+//     Username TEXT,
+//     Password TEXT,
+//     UserType TEXT,
+//     TransactionDate TEXT,
+//     TransactionCreatedDate TEXT,
+//     PRIMARY KEY(SL_NO)
+// )`;
+//     await pool.execute(query);
+//     query = `ALTER TABLE Reception AUTO_INCREMENT = 1`;
+//     await pool.execute(query);
+//     const [result] = await pool.execute(query);
+//     notifier.notify({
+//         title: 'Salutations!',
+//         message: 'Users table created successfully!!',
+//         icon: path.join(__dirname, 'static', 'table.png'),
+//         sound: true,
+//         wait: true
+//     });
+//     res.redirect('/home');
+// });
 
 // Create reception table 
-app.get('/create/receptionTable', async (req, res) => {
-    let query = `CREATE TABLE Reception (
-    SL_NO INT AUTO_INCREMENT,
-    Date TEXT,
-    Location TEXT,
-    Name_Of_Visitor TEXT,
-    Number_Of_Visitors TEXT,
-    Address TEXT,
-    Purpose TEXT,
-    To_Whom_Meet TEXT,
-    Scheduled_Time TEXT,
-    Time_In TEXT,
-    Time_Out TEXT,
-    Duration TEXT,
-    Mobile_No TEXT,
-    TransactionDate TEXT,
-    TransactionCreatedDate TEXT,
-    VisitorStatus TEXT,
-    TransactionCreatedBy TEXT,
-    PRIMARY KEY(SL_NO)
-)`;
-    await pool.execute(query);
-    query = `ALTER TABLE Reception AUTO_INCREMENT = 1`;
-    await pool.execute(query);
-    const [result] = await pool.execute(query);
-    notifier.notify({
-        title: 'Salutations!',
-        message: 'Reception table created successfully!!',
-        icon: path.join(__dirname, 'static', 'table.png'),
-        sound: true,
-        wait: true
-    });
-    res.redirect('/home');
-});
+// app.get('/create/receptionTable', async (req, res) => {
+//     let query = `CREATE TABLE Reception (
+//     SL_NO INT AUTO_INCREMENT,
+//     Date TEXT,
+//     Location TEXT,
+//     Name_Of_Visitor TEXT,
+//     Number_Of_Visitors TEXT,
+//     Address TEXT,
+//     Purpose TEXT,
+//     To_Whom_Meet TEXT,
+//     Scheduled_Time TEXT,
+//     Time_In TEXT,
+//     Time_Out TEXT,
+//     Duration TEXT,
+//     Mobile_No TEXT,
+//     TransactionDate TEXT,
+//     TransactionCreatedDate TEXT,
+//     VisitorStatus TEXT,
+//     TransactionCreatedBy TEXT,
+//     PRIMARY KEY(SL_NO)
+// )`;
+//     await pool.execute(query);
+//     query = `ALTER TABLE Reception AUTO_INCREMENT = 1`;
+//     await pool.execute(query);
+//     const [result] = await pool.execute(query);
+//     notifier.notify({
+//         title: 'Salutations!',
+//         message: 'Reception table created successfully!!',
+//         icon: path.join(__dirname, 'static', 'table.png'),
+//         sound: true,
+//         wait: true
+//     });
+//     res.redirect('/home');
+// });
 
 // Create conference table
-app.get('/create/conferenceTable', async (req, res) => {
-    let query = `CREATE TABLE Conference (
-    SL_NO INT AUTO_INCREMENT,
-    Name_Of_Person TEXT,
-    Date TEXT,
-    Location TEXT,
-    Room_No TEXT,
-    Meeting_Start_Time TEXT,
-    Meeting_End_Time TEXT,
-    TransactionDate TEXT,
-    TransactionCreatedDate TEXT,
-    TransactionCreatedBy TEXT,
-    PRIMARY KEY(SL_NO)
-)`;
-    await pool.execute(query);
-    query = `ALTER TABLE Conference AUTO_INCREMENT = 1`;
-    await pool.execute(query);
-    const [result] = await pool.execute(query);
-    notifier.notify({
-        title: 'Salutations!',
-        message: 'Conference table created successfully!!',
-        icon: path.join(__dirname, 'static', 'table.png'),
-        sound: true,
-        wait: true
-    });
-    res.redirect('/home');
-});
+// app.get('/create/conferenceTable', async (req, res) => {
+//     let query = `CREATE TABLE Conference (
+//     SL_NO INT AUTO_INCREMENT,
+//     Name_Of_Person TEXT,
+//     Date TEXT,
+//     Location TEXT,
+//     Room_No TEXT,
+//     Meeting_Start_Time TEXT,
+//     Meeting_End_Time TEXT,
+//     TransactionDate TEXT,
+//     TransactionCreatedDate TEXT,
+//     TransactionCreatedBy TEXT,
+//     PRIMARY KEY(SL_NO)
+// )`;
+//     await pool.execute(query);
+//     query = `ALTER TABLE Conference AUTO_INCREMENT = 1`;
+//     await pool.execute(query);
+//     const [result] = await pool.execute(query);
+//     notifier.notify({
+//         title: 'Salutations!',
+//         message: 'Conference table created successfully!!',
+//         icon: path.join(__dirname, 'static', 'table.png'),
+//         sound: true,
+//         wait: true
+//     });
+//     res.redirect('/home');
+// });
 
 // Drop reception table
-app.get('/drop/ReceptionTable', async (req, res) => {
-    let query = `Drop TABLE Reception`;
-    const [result] = await pool.execute(query);
-    notifier.notify({
-        title: 'Salutations!',
-        message: 'Reception table dropped successfully!!',
-        icon: path.join(__dirname, 'static', 'table.png'),
-        sound: true,
-        wait: true
-    });
-    res.redirect('/home');
-});
+// app.get('/drop/ReceptionTable', async (req, res) => {
+//     let query = `Drop TABLE Reception`;
+//     const [result] = await pool.execute(query);
+//     notifier.notify({
+//         title: 'Salutations!',
+//         message: 'Reception table dropped successfully!!',
+//         icon: path.join(__dirname, 'static', 'table.png'),
+//         sound: true,
+//         wait: true
+//     });
+//     res.redirect('/home');
+// });
 
 // Drop conference table
-app.get('/drop/ConferenceTable', async (req, res) => {
-    let query = `Drop TABLE Conference`;
-    const [result] = await pool.execute(query);
-    notifier.notify({
-        title: 'Salutations!',
-        message: 'Conference table dropped successfully!!',
-        icon: path.join(__dirname, 'static', 'table.png'),
-        sound: true,
-        wait: true
-    });
-    res.redirect('/home');
-});
+// app.get('/drop/ConferenceTable', async (req, res) => {
+//     let query = `Drop TABLE Conference`;
+//     const [result] = await pool.execute(query);
+//     notifier.notify({
+//         title: 'Salutations!',
+//         message: 'Conference table dropped successfully!!',
+//         icon: path.join(__dirname, 'static', 'table.png'),
+//         sound: true,
+//         wait: true
+//     });
+//     res.redirect('/home');
+// });
 
 // GET requests for all the pages
 // Login page
@@ -703,7 +703,7 @@ app.get('/displayVisitorsDayWise/:userLocation', async (req, res) => {
     await pool.execute(query);
 
     try {
-        query = `SELECT date, count(sl_no) as number_of_visitors FROM reception WHERE Location = 'Tirumala Office' GROUP BY date ORDER BY number_of_visitors DESC, date DESC LIMIT 7;`;
+        query = `SELECT date, count(sl_no) as number_of_visitors FROM reception WHERE Location = 'Tirumala Office' GROUP BY date ORDER BY date DESC LIMIT 7;`;
         const [visitors] = await pool.execute(query);
         if (visitors.length > 0) {
             res.status(200).json(visitors);
@@ -750,7 +750,7 @@ app.get('/downloadAllVisitors', async (req, res) => {
 
         res.status(200).send(excelBuffer);
 
-       // console.log('Excel file sent successfully.');
+        // console.log('Excel file sent successfully.');
         notifier.notify({
             title: 'Salutations!',
             message: 'Visitor details downloaded',
