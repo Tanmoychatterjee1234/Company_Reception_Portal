@@ -1,0 +1,237 @@
+ // Triggering events when DOM Content Loaded
+ var employeeId, userLocation, username, userType;
+ document.addEventListener('DOMContentLoaded', async () => {
+     try {
+         const sessionResponse = await fetch('/sessionData');
+         const sessionData = await sessionResponse.json();
+         employeeId = sessionData['employeeId'];
+         userLocation = sessionData['userLocation'];
+         username = sessionData['username'];
+         userType = sessionData['userType'];
+         // console.log(sessionData);
+     } catch (error) {
+         console.error('Error fetching session data:', error);
+     }
+
+     if (!employeeId || !userLocation || !username || !userType) {
+         window.location.href = 'login.html';
+     }
+ });
+
+ // Go to home page
+ document.getElementById('home').addEventListener('click', function () {
+     window.location.href = 'home.html';
+ });
+
+ // Go the Company's website
+ document.getElementById('skipperLogo').addEventListener('click', function () {
+     window.location.href = 'https://www.skipperlimited.com/';
+ });
+
+ // Switch between forms
+ function showForm(formId) {
+     const resultDiv = document.getElementById("result");
+     const paginationSection = document.getElementById('paginationSection');
+     const forms = document.querySelectorAll('.form-section');
+     forms.forEach(form => form.classList.remove('active-form'));
+
+     document.getElementById(formId + 'Section').classList.add('active-form');
+
+     const tabs = document.querySelectorAll('.tab');
+     tabs.forEach(tab => tab.classList.remove('active-tab'));
+     var activeTab = "";
+     if (formId == 'downloadForm') {
+         activeTab = "downloadTab";
+         resultDiv.style.display = 'none';
+
+     }
+     else if (formId == 'displayForm') {
+         activeTab = "displayTab";
+         resultDiv.style.display = 'block';
+
+     }
+     // console.log(activeTab);
+     document.getElementById(activeTab).classList.add('active-tab');
+ }
+
+ // Submit download form
+ const downloadForm = document.getElementById('downloadForm');
+ downloadForm.addEventListener("submit", async (event) => {
+     event.preventDefault();
+     try {
+         response = await fetch(`/downloadAllVisitors`, {
+             method: 'GET',
+             headers: {
+                 'Content-Type': 'application/json'
+             },
+         });
+         if (response.ok) {
+             const blob = await response.blob();
+             const url = window.URL.createObjectURL(blob);
+             const a = document.createElement('a');
+             a.style.display = 'none';
+             a.href = url;
+             a.download = 'visitors.xlsx';
+             document.body.appendChild(a);
+             a.click();
+             window.URL.revokeObjectURL(url);
+             a.remove();
+         }
+         else if (response.status == '404') {
+             alert('No visitors found');
+             return;
+         }
+     }
+     catch (error) {
+         console.error('Error downloading visitors:', error);
+         alert('Failed to download visitors, Error generating Excel file');
+         return;
+     }
+ });
+
+ // Working with the display form 
+ const displayForm = document.getElementById('displayForm');
+ const resultDiv = document.getElementById("result");
+ let visitorsData = []; 
+ let currentPage = 1; 
+ const recordsPerPage = 10;
+
+ // Handle form submission and data fetching
+ displayForm.addEventListener("submit", async (event) => {
+     event.preventDefault();
+
+     try {
+         const response = await fetch(`/displayAllVisitors/${userLocation}/${userType}`, {
+             method: 'GET',
+             headers: {
+                 'Content-Type': 'application/json',
+             }
+         });
+
+         const data = await response.json();
+
+         if (response.ok) {
+             visitorsData = data;
+             renderTable(currentPage); 
+         } else {
+             resultDiv.innerHTML = `<p>${data.message}</p>`;
+         }
+     } catch (error) {
+        //  console.error('Error:', error);
+         resultDiv.innerHTML = '<p>No visitors found. An error occurred while searching for the visitors.</p>';
+     }
+ });
+
+ // Render the table for the given page
+ function renderTable(page) {
+     const startIndex = (page - 1) * recordsPerPage;
+     const endIndex = page * recordsPerPage;
+     const currentPageData = visitorsData.slice(startIndex, endIndex);
+
+     let tableHTML = `
+ <table>
+     <thead>
+         <tr>
+             <th>Sl No</th>
+             <th>Location</th>
+             <th>Date</th>
+             <th>Name of Visitor</th>
+             <th>Number of Visitors</th>
+             <th>Address</th>
+             <th>Purpose</th>
+             <th>To Whom Meet</th>
+             <th>Scheduled Time</th>
+             <th>Time In</th>
+             <th>Time Out</th>
+             <th>Duration</th>
+             <th>Mobile No</th>
+             <th>Status</th>
+         </tr>
+     </thead>
+     <tbody>
+         ${currentPageData.map(visitor => `
+             <tr>
+                 <td>${visitor.SL_NO || ''}</td>
+                 <td>${visitor.Location || ''}</td>
+                 <td>${visitor.Date || ''}</td>
+                 <td>${visitor.Name_Of_Visitor || ''}</td>
+                 <td>${visitor.Number_Of_Visitors || ''}</td>
+                 <td>${visitor.Address || ''}</td>
+                 <td>${visitor.Purpose || ''}</td>
+                 <td>${visitor.To_Whom_Meet || ''}</td>
+                 <td>${visitor.Scheduled_Time || ''}</td>
+                 <td>${visitor.Time_In || ''}</td>
+                 <td>${visitor.Time_Out || ''}</td>
+                 <td>${visitor.Duration || ''}</td>
+                 <td>${visitor.Mobile_No || ''}</td>
+                 <td>${visitor.VisitorStatus || ''}</td>
+             </tr>
+         `).join('')}
+     </tbody>
+ </table>
+`;
+
+     resultDiv.innerHTML = tableHTML;
+     updatePaginationControls(); 
+ }
+
+ // Update pagination controls (Previous and Next buttons)
+ function updatePaginationControls() {
+     const totalPages = Math.ceil(visitorsData.length / recordsPerPage);
+     const paginationHTML = `
+ <div class="pagination">
+     <button ${currentPage === 1 ? 'disabled' : ''} onclick="changePage('prev')" style="max-width: 100px; margin: 8px">Prev</button>
+     <span>Page ${currentPage} of ${totalPages}</span>
+     <button ${currentPage === totalPages ? 'disabled' : ''} onclick="changePage('next')" style="max-width: 100px; margin: 8px">Next</button>
+ </div>
+`;
+
+     resultDiv.innerHTML += paginationHTML;
+ }
+
+ // Change page based on direction (Prev/Next)
+ function changePage(direction) {
+     const totalPages = Math.ceil(visitorsData.length / recordsPerPage);
+
+     if (direction === 'prev' && currentPage > 1) {
+         currentPage--;
+     } else if (direction === 'next' && currentPage < totalPages) {
+         currentPage++;
+     }
+
+     renderTable(currentPage);
+ }
+
+
+ // Timer function
+ // When five minutes of idleness end, trigger auto logout
+ var IdealTimeOut = 300;
+ var idleSecondsTimer = null;
+ var idleSecondsCounter = 0;
+ document.onclick = function () { idleSecondsCounter = 0; };
+ document.onmousemove = function () { idleSecondsCounter = 0; };
+ document.onkeypress = function () { idleSecondsCounter = 0; };
+ idleSecondsTimer = window.setInterval(CheckIdleTime, 1000);
+
+ function CheckIdleTime() {
+     idleSecondsCounter++;
+     if (idleSecondsCounter >= IdealTimeOut) {
+         fetch('/logout')
+             .then(response => response.json())
+             .catch(err => console.error('Error destroying session data:', err));
+         window.clearInterval(idleSecondsTimer);
+         alert("Your Session has expired. Please login again.");
+         window.location.href = "login.html";
+     }
+ }
+
+ // When visibility change occur, trigger auto logout
+ document.addEventListener("visibilitychange", function () {
+     if (idleSecondsCounter >= 80) {
+         fetch('/logout')
+             .then(response => response.json())
+             .catch(err => console.error('Error destroying session data:', err));
+         window.clearInterval(idleSecondsTimer);
+         window.location.href = "login.html";
+     }
+ });

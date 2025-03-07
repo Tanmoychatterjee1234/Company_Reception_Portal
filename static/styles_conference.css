@@ -132,7 +132,7 @@ input {
     transition: border-color 0.3s;
 }
 
-label{
+label {
     font-size: 17px;
 }
 
@@ -253,11 +253,61 @@ footer p {
     top: 0;
     width: 100%;
     height: 100%;
+    overflow: auto;
     background-color: rgba(0, 0, 0, 0.5);
-    animation: fadeIn 0.3s ease-in-out;
 }
 
 .modal-content {
+    background-color: #ffffff;
+    margin: 5% auto;
+    padding: 30px;
+    border: 1px solid #888;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.message {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
+
+.form-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    animation: fadeIn 0.3s ease-in-out;
+}
+.form-modal-content {
     background-color: #ffffff;
     margin: 15% auto;
     padding: 20px;
@@ -312,4 +362,4 @@ footer p {
 @keyframes slideIn {
     from { transform: translateY(-20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
-}
+} 

@@ -11,19 +11,21 @@ import cookieParser from 'cookie-parser';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import http from 'http';
+import { rateLimit } from 'express-rate-limit';
 dotenv.config();
 
-
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, 
+	limit: 50, 
+	standardHeaders: 'draft-8', 
+	legacyHeaders: false, 
+});
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
 const port = process.env.port;
 const JWT_SECRET = process.env.JWT_SECRET;
-
-const pool = mysql.createPool({
-    uri: `mysql://${process.env.user}:${process.env.dbpassword}@${process.env.host}:${process.env.dbport}/${process.env.database}`,
-});
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -33,7 +35,8 @@ app.use(express.static('static'));
 app.use(express.static(path.join(__dirname, 'static')));
 app.use(cookieParser());
 app.use(cors());
-app.setMaxListeners(1000);
+app.setMaxListeners(100);
+app.use(limiter);
 app.use(session({
     secret: process.env.appsecret,
     resave: false,
@@ -43,6 +46,12 @@ app.use(session({
         maxAge: 30 * 60 * 1000
     }
 }));
+
+// Getting Database connection 
+// Creating a MySQL pool
+const pool = mysql.createPool({
+    uri: `mysql://${process.env.user}:${process.env.dbpassword}@${process.env.host}:${process.env.dbport}/${process.env.database}`,
+});
 
 // Creation and deletion of tables
 // Create users table 
@@ -231,18 +240,17 @@ app.get('/loginUser/:location/:employeeId/:password', async (req, res) => {
     const location = req.params.location;
     const employeeId = req.params.employeeId;
     const password = req.params.password;
+
+    // console.log({ location, employeeId, password });
+
     if (!location || !employeeId || !password) {
         return res.status(400).json({ message: 'All fields are required' });
-    }
-    var hashedPassword = "";
-    for (let i = 0; i < password.length; i++) {
-        hashedPassword += process.env.secret_one + password.charCodeAt(i) + process.env.secret_two;
     }
 
     const query = `SELECT * FROM Users WHERE location = ? AND employeeId = ? AND password = ?`;
 
     try {
-        const [result] = await pool.execute(query, [location, employeeId, hashedPassword]);
+        const [result] = await pool.execute(query, [location, employeeId, password]);
         if (result.length > 0) {
             req.session.user = {
                 employeeId: result[0].EmployeeId,
@@ -251,7 +259,7 @@ app.get('/loginUser/:location/:employeeId/:password', async (req, res) => {
                 userType: result[0].UserType
             };
             req.session.save();
-            res.status(200).json({ message: 'Successful login' });;
+            res.status(200).json({ message: 'Successful login' });
         } else {
             res.status(401).json({ message: 'Invalid credentials' });
         }
@@ -269,6 +277,7 @@ app.get('/loginUser/:location/:employeeId/:password', async (req, res) => {
         res.status(500).json({ message: 'An unexpected error occurred. Please try again later.', details: error.message });
     }
 });
+
 
 // Fetch session data
 app.get('/sessionData', async (req, res) => {
@@ -310,10 +319,6 @@ app.post('/registerUser', async (req, res) => {
     var transactionDate = date_time;
     var transactionCreatedDate = date_time;
     const { location, employeeId, password, username, userType } = req.body;
-    var hashedPassword = "";
-    for (let i = 0; i < password.length; i++) {
-        hashedPassword += process.env.secret_one + password.charCodeAt(i) + process.env.secret_two;
-    }
     const query = `
         INSERT INTO Users (
             location,employeeId,password,username,userType,TransactionDate,TransactionCreatedDate
@@ -321,7 +326,7 @@ app.post('/registerUser', async (req, res) => {
     `;
 
     try {
-        const [result] = await pool.execute(query, [location, employeeId, hashedPassword, username, userType, transactionDate, transactionCreatedDate]);
+        const [result] = await pool.execute(query, [location, employeeId, password, username, userType, transactionDate, transactionCreatedDate]);
         notifier.notify({
             title: 'Salutations!',
             message: 'User added successfully!!',
@@ -342,7 +347,11 @@ app.post('/deleteUser', async (req, res) => {
     const query = `Delete FROM Users WHERE location = ? AND employeeId = ?`;
 
     try {
+        let safeQuery = `SET SQL_SAFE_UPDATES=0`;
+        await pool.execute(safeQuery);
         const [result] = await pool.execute(query, [location, employeeId]);
+        safeQuery = `SET SQL_SAFE_UPDATES=1`;
+        await pool.execute(safeQuery);
         if (result.affectedRows > 0) {
             notifier.notify({
                 title: 'Salutations!',
